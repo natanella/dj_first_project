@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 DATA = {
@@ -28,3 +29,14 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+
+
+def recipe_view(request, recipe_name):
+
+    servings = request.GET.get('servings', 1)
+
+    context = {
+        'recipe': {k: v * int(servings) for k, v in DATA[recipe_name].items()},
+    }
+
+    return render(request, 'calculator/index.html', context)
